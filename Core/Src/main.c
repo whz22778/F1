@@ -620,8 +620,8 @@ int main(void)
 					if (cntt <= 40)
 					{
 						LED_Blue_rectangle_current(0, RED_NUM, 0, 0);
-						WS_WriteAll_RGB_FRAME_UP(RED_NUM, 0, 0);
-						WS_WriteAll_RGB_FRAME_DOWN(RED_NUM, 0, 0);
+						// WS_WriteAll_RGB_FRAME_UP(RED_NUM, 0, 0);
+						// WS_WriteAll_RGB_FRAME_DOWN(RED_NUM, 0, 0);
 					}
 
 					if (cntt >= 70)
@@ -733,7 +733,7 @@ int main(void)
 				{
 
 					WS_WriteAll_RGB_REC(RED_NUM, 0, 0);
-					WS_WriteAll_RGB_FRAME_DOWN(RED_NUM, 0, 0);
+
 					WS_WriteAll_RGB_FRAME(RED_NUM, 0, 0);
 
 					if (Rings_Key_record.one_ring_record == 1)
