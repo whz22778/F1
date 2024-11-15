@@ -436,8 +436,8 @@ int main(void)
 					if (cntt <= 30)
 					{
 						LED_Blue_rectangle_current(0, 0, 0, BLUE_NUM);
-						// WS_WriteAll_RGB_FRAME_UP(0, 0, BLUE_NUM);
-						// WS_WriteAll_RGB_FRAME_DOWN(0, 0, BLUE_NUM);
+						WS_WriteAll_RGB_FRAME_UP(0, 0, BLUE_NUM);
+						WS_WriteAll_RGB_FRAME_DOWN(0, 0, BLUE_NUM);
 					}
 
 					if (cntt >= 50)
