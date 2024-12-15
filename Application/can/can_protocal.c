@@ -5,7 +5,7 @@
  * @date        9-September-2020
  * @brief       CAN Potocol.
  */
- 
+
 /* Includes ------------------------------------------------------------------*/
 #include "can_protocal.h"
 #include "main.h"
@@ -13,40 +13,36 @@
 Big_Fu_info_t Big_Fu_info[5];
 uint8_t can_Dafu_data[8];
 
-/************** ĞÅÏ¢½ÓÊÕ´¦Àí ***************/
+/************** ä¿¡æ¯æ¥æ”¶å¤„ç† ***************/
 /**
- *	@brief	CAN1 ½ÓÊÕÊı¾İ Êı¾İ´¦Àí
+ *	@brief	CAN1 æ¥æ”¶æ•°æ® æ•°æ®å¤„ç†
  */
 
 void CAN1_rxDataHandler(uint32_t canId, uint8_t *rxBuf)
-{	
-  Board_RX(canId,can1_rx_data);	
+{
+  Board_RX(canId, can1_rx_data);
 }
-/************** ĞÅÏ¢·¢ËÍ´¦Àí ***************/
+/************** ä¿¡æ¯å‘é€å¤„ç† ***************/
 /**
- *	@brief	CAN1 ·¢ËÍÊı¾İ Êı¾İ´¦Àí
-     Îå¿é·ûÒ¶Ö÷¿Ø£¬ÉÕÄÄ¿éÈ¡ÏûÄÄ¿éµÄ×¢ÊÍ
+ *	@brief	CAN1 å‘é€æ•°æ® æ•°æ®å¤„ç†
+     äº”å—ç¬¦å¶ä¸»æ§ï¼Œçƒ§å“ªå—å–æ¶ˆå“ªå—çš„æ³¨é‡Š
  */
-
 
 void Board_Info_Tx()
 {
 
-//   memcpy(can_Dafu_data, &Big_Fu_info[0], 8);
-//	 Board_Tx(CAN_BOARD_ID_1,can_Dafu_data,1,0x08);
+  // memcpy(can_Dafu_data, &Big_Fu_info[0], 8);
+  //  Board_Tx(CAN_BOARD_ID_1,can_Dafu_data,1,0x08);
 
-//	 memcpy(can_Dafu_data, &Big_Fu_info[1], 8);
-//	 Board_Tx(CAN_BOARD_ID_2,can_Dafu_data,1,0x08);	
-//
-//	 memcpy(can_Dafu_data, &Big_Fu_info[2], 8);
-//	 Board_Tx(CAN_BOARD_ID_3,can_Dafu_data,1,0x08);
-//	
-//	 memcpy(can_Dafu_data, &Big_Fu_info[3], 8);
-//	 Board_Tx(CAN_BOARD_ID_4,can_Dafu_data,1,0x08);	
-//	
-	 memcpy(can_Dafu_data, &Big_Fu_info[4], 8);
-	 Board_Tx(CAN_BOARD_ID_5,can_Dafu_data,1,0x08);
-	
-	
+  // memcpy(can_Dafu_data, &Big_Fu_info[1], 8);
+  // Board_Tx(CAN_BOARD_ID_2, can_Dafu_data, 1, 0x08);
+  //
+  //  memcpy(can_Dafu_data, &Big_Fu_info[2], 8);
+  //  Board_Tx(CAN_BOARD_ID_3,can_Dafu_data,1,0x08);
+  //
+  // memcpy(can_Dafu_data, &Big_Fu_info[3], 8);
+  // Board_Tx(CAN_BOARD_ID_4, can_Dafu_data, 1, 0x08);
+  //
+  memcpy(can_Dafu_data, &Big_Fu_info[4], 8);
+  Board_Tx(CAN_BOARD_ID_5, can_Dafu_data, 1, 0x08);
 }
-

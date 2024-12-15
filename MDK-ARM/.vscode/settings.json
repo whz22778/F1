@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "*.ino": "arduino-output",
-        "ws2812.h": "c"
+        "ws2812.h": "c",
+        "can_receive.h": "c",
+        "can_send.h": "c"
     }
 }

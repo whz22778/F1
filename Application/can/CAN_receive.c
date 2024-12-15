@@ -3,8 +3,8 @@
   * @file       can_receive.c/h
   * @brief      there is CAN interrupt function  to receive motor data,
   *             and CAN send function to send motor current to control motor.
-  *             ÕâÀïÊÇCANÖĞ¶Ï½ÓÊÕº¯Êı£¬½ÓÊÕµç»úÊı¾İ,CAN·¢ËÍº¯Êı·¢ËÍµç»úµçÁ÷¿ØÖÆµç»ú.
-  * @note       
+  *             è¿™é‡Œæ˜¯CANä¸­æ–­æ¥æ”¶å‡½æ•°ï¼Œæ¥æ”¶ç”µæœºæ•°æ®,CANå‘é€å‡½æ•°å‘é€ç”µæœºç”µæµæ§åˆ¶ç”µæœº.
+  * @note
   * @history
   *  Version    Date            Author          Modification
   *  V1.0.0          RM              1. done
@@ -20,7 +20,7 @@
 #include "CAN_receive.h"
 #include "main.h"
 
-//CAN_HandleTypeDef hcan1;
+// CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan;
 
 uint8_t can1_rx_data[8];
@@ -30,161 +30,146 @@ CAN_RxHeaderTypeDef hcan1RxFrame;
 Board_Can_info_t Board_Can_info;
 Board_Order_info_t Board_Order_info[5];
 
-
 __WEAK void CAN1_rxDataHandler(uint32_t canId, uint8_t *rxBuf);
-
-
 
 /* Private functions ---------------------------------------------------------*/
 /**
- *	@brief	CAN ±êÊ¶·û¹ıÂËÆ÷¸´Î»³ÉÄ¬ÈÏÅäÖÃ
+ *	@brief	CAN æ ‡è¯†ç¬¦è¿‡æ»¤å™¨å¤ä½æˆé»˜è®¤é…ç½®
  */
 static void CAN_Filter_ParamsInit(CAN_FilterTypeDef *sFilterConfig)
 {
-	sFilterConfig->FilterIdHigh = 0;						
-	sFilterConfig->FilterIdLow = 0;							
-	sFilterConfig->FilterMaskIdHigh = 0;					// ²»¹ıÂË
-	sFilterConfig->FilterMaskIdLow = 0;						// ²»¹ıÂË
-	sFilterConfig->FilterFIFOAssignment = CAN_FILTER_FIFO0;	// ¹ıÂËÆ÷¹ØÁªµ½FIFO0
-	sFilterConfig->FilterBank = 0;							// ÉèÖÃ¹ıÂËÆ÷0
-	sFilterConfig->FilterMode = CAN_FILTERMODE_IDMASK;		// ±êÊ¶·ûÆÁ±ÎÄ£Ê½
-	sFilterConfig->FilterScale = CAN_FILTERSCALE_32BIT;		// 32Î»¿í
-	sFilterConfig->FilterActivation = ENABLE;				// ¼¤»îÂË²¨Æ÷
+	sFilterConfig->FilterIdHigh = 0;
+	sFilterConfig->FilterIdLow = 0;
+	sFilterConfig->FilterMaskIdHigh = 0;					// ä¸è¿‡æ»¤
+	sFilterConfig->FilterMaskIdLow = 0;						// ä¸è¿‡æ»¤
+	sFilterConfig->FilterFIFOAssignment = CAN_FILTER_FIFO0; // è¿‡æ»¤å™¨å…³è”åˆ°FIFO0
+	sFilterConfig->FilterBank = 0;							// è®¾ç½®è¿‡æ»¤å™¨0
+	sFilterConfig->FilterMode = CAN_FILTERMODE_IDMASK;		// æ ‡è¯†ç¬¦å±è”½æ¨¡å¼
+	sFilterConfig->FilterScale = CAN_FILTERSCALE_32BIT;		// 32ä½å®½
+	sFilterConfig->FilterActivation = ENABLE;				// æ¿€æ´»æ»¤æ³¢å™¨
 	sFilterConfig->SlaveStartFilterBank = 0;
 }
 
 /* Exported functions --------------------------------------------------------*/
 /**
- *	@brief	CAN1 ³õÊ¼»¯
+ *	@brief	CAN1 åˆå§‹åŒ–
  */
 void CAN1_Init(void)
 {
 	CAN_FilterTypeDef sFilterConfig;
-	
-	// ÅäÖÃCAN±êÊ¶·ûÂË²¨Æ÷
+
+	// é…ç½®CANæ ‡è¯†ç¬¦æ»¤æ³¢å™¨
 	CAN_Filter_ParamsInit(&sFilterConfig);
 	HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);
-	// Ê¹ÄÜ½ÓÊÕÖĞ¶Ï
+	// ä½¿èƒ½æ¥æ”¶ä¸­æ–­
 	HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
-	
-	// ¿ªÆôCAN1
+
+	// å¼€å¯CAN1
 	HAL_CAN_Start(&hcan);
 }
 
-
 /**
- *	@brief	CAN ½ÓÊÕÖĞ¶Ï»Øµ÷º¯Êı
+ *	@brief	CAN æ¥æ”¶ä¸­æ–­å›è°ƒå‡½æ•°
  */
 static void CAN_Rx_Callback(CAN_HandleTypeDef *hcan)
 {
-	if(hcan->Instance == CAN1)
+	if (hcan->Instance == CAN1)
 	{
 		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &hcan1RxFrame, can1_rx_data);
-		
+
 		CAN1_rxDataHandler(hcan1RxFrame.StdId, can1_rx_data);
 	}
-
 }
 
-
 /**
-  * @brief          hal CAN fifo call back, receive motor data
-  * @param[in]      hcan, the point to CAN handle
-  * @retval         none
-  */
+ * @brief          hal CAN fifo call back, receive motor data
+ * @param[in]      hcan, the point to CAN handle
+ * @retval         none
+ */
 /**
-  * @brief          hal¿âCAN»Øµ÷º¯Êı,½ÓÊÕµç»úÊı¾İ
-  * @param[in]      hcan:CAN¾ä±úÖ¸Õë
-  * @retval         none
-  */
+ * @brief          halåº“CANå›è°ƒå‡½æ•°,æ¥æ”¶ç”µæœºæ•°æ®
+ * @param[in]      hcan:CANå¥æŸ„æŒ‡é’ˆ
+ * @retval         none
+ */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
-{	
-	if(hcan->Instance == CAN1)
-	{		
-		 CAN_Rx_Callback(hcan);
-	}	
-}		
-
-void get_Centrol_measure(Board_Order_info_t *ptr)                                    
-{                                                                   
-	ptr->Twinkle_state = can1_rx_data[0];																
-	ptr->All_Led_Close = can1_rx_data[1];  
-	ptr->All_Led_Open =  can1_rx_data[2];  
-	ptr->Board_Work =  can1_rx_data[3];  
-	ptr->Set_Color  = can1_rx_data[4];
-	ptr->start_permission = can1_rx_data[5];
-	ptr->RainBow_Flag =  can1_rx_data[6];
+{
+	if (hcan->Instance == CAN1)
+	{
+		CAN_Rx_Callback(hcan);
+	}
 }
 
+void get_Centrol_measure(Board_Order_info_t *ptr)
+{
+	ptr->Twinkle_state = can1_rx_data[0];
+	ptr->All_Led_Close = can1_rx_data[1];
+	ptr->All_Led_Open = can1_rx_data[2];
+	ptr->Board_Work = can1_rx_data[3];
+	ptr->Set_Color = can1_rx_data[4];
+	ptr->start_permission = can1_rx_data[5];
+	ptr->RainBow_Flag = can1_rx_data[6];
+}
 
 /***************************
-  Îå¿é·ûÒ¶Ö÷¿Ø£¬ÉÕÄÄ¿éÈ¡ÏûÄÄ¿éµÄ×¢ÊÍ
+ äº”å—ç¬¦å¶ä¸»æ§ï¼Œçƒ§å“ªå—å–æ¶ˆå“ªå—çš„æ³¨é‡Š
 ***************************/
 void Board_RX(uint32_t ID, uint8_t *data)
 {
-	Board_Can_info.offline_cnt_max = OFFLINE_TIME_MAX; 
-	
-	switch(ID)
+	Board_Can_info.offline_cnt_max = OFFLINE_TIME_MAX;
+
+	switch (ID)
 	{
-//		
-//		case CAN_BOARD_ID_1_F:
-//		{
-//			get_Centrol_measure(&Board_Order_info[0]);
-//			Board_Can_info.B1_offline_cnt= 0;
-//			
-//			break;
-//		}	
-//	
-//	  case CAN_BOARD_ID_2_F:
-//		{
-//			get_Centrol_measure(&Board_Order_info[1]);
-//			Board_Can_info.B2_offline_cnt= 0;
-//			
-//			break;
-//		}	
-//		
-//		case CAN_BOARD_ID_3_F:
-//		{
-//			get_Centrol_measure(&Board_Order_info[2]);
-//			Board_Can_info.B3_offline_cnt= 0;
-//			
-//			break;
-//		}	
-//		
-//		case CAN_BOARD_ID_4_F:
-//		{
-//			get_Centrol_measure(&Board_Order_info[3]);
-//			Board_Can_info.B4_offline_cnt= 0;
-//			
-//			break;
-//		}	
-//		
-		case CAN_BOARD_ID_5_F:
-		{
-			get_Centrol_measure(&Board_Order_info[4]);
-			Board_Can_info.B5_offline_cnt= 0;			
-			break;
-		}	
-//		
-		default:
-		{
-				break;
-		}
-		
+		//
+		//		case CAN_BOARD_ID_1_F:
+		//		{
+		//			get_Centrol_measure(&Board_Order_info[0]);
+		//			Board_Can_info.B1_offline_cnt= 0;
+		//
+		//			break;
+		//		}
+		//
+		// case CAN_BOARD_ID_2_F:
+		// {
+		// 	get_Centrol_measure(&Board_Order_info[1]);
+		// 	Board_Can_info.B2_offline_cnt = 0;
+
+		// 	break;
+		// }
+		// 	//
+		// case CAN_BOARD_ID_3_F:
+		// {
+		// 	get_Centrol_measure(&Board_Order_info[2]);
+		// 	Board_Can_info.B3_offline_cnt= 0;
+
+		// 	break;
+		// }
+		//
+		// case CAN_BOARD_ID_4_F:
+		// {
+		// 	get_Centrol_measure(&Board_Order_info[3]);
+		// 	Board_Can_info.B4_offline_cnt= 0;
+
+		// 	break;
+		// }
+	//
+	case CAN_BOARD_ID_5_F:
+	{
+		get_Centrol_measure(&Board_Order_info[4]);
+		Board_Can_info.B5_offline_cnt = 0;
+		break;
+	}
+		//
+	default:
+	{
+		break;
+	}
 	}
 }
 
-
-
-
 /* rxData Handler [Weak] functions -------------------------------------------*/
 /**
- *	@brief	[__WEAK] ĞèÒªÔÚ  ÖĞÊµÏÖ¾ßÌåµÄ CAN1 Êı¾İ´¦ÀíĞ­Òé 
+ *	@brief	[__WEAK] éœ€è¦åœ¨  ä¸­å®ç°å…·ä½“çš„ CAN1 æ•°æ®å¤„ç†åè®®
  */
 __WEAK void CAN1_rxDataHandler(uint32_t canId, uint8_t *rxBuf)
 {
 }
-
-
-
-
