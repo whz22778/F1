@@ -63,7 +63,7 @@ typedef struct
   uint8_t Set_Color;
   uint8_t start_permission;
   uint8_t RainBow_Flag;
-  uint8_t hitover
+  uint8_t hitover;//新增激活判断
 } Board_Order_info_t;
 
 void CAN1_Init(void);
