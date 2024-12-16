@@ -108,6 +108,7 @@ void get_Centrol_measure(Board_Order_info_t *ptr)
 	ptr->Set_Color = can1_rx_data[4];
 	ptr->start_permission = can1_rx_data[5];
 	ptr->RainBow_Flag = can1_rx_data[6];
+	ptr->hitover = can1_rx_data[7];
 }
 
 /***************************
