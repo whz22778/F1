@@ -4,6 +4,12 @@
         "ws2812.h": "c",
         "can_receive.h": "c",
         "can_send.h": "c",
-        "can_protocal.h": "c"
+        "can_protocal.h": "c",
+        "main.h": "c",
+        "can.h": "c",
+        "dma.h": "c",
+        "tim.h": "c",
+        "gpio.h": "c",
+        "flag_state.h": "c"
     }
 }
