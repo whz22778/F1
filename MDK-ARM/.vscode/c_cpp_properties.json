@@ -95,8 +95,7 @@
                 "__yield()=",
                 "__vfp_status(x,y)=0"
             ],
-            "intelliSenseMode": "${default}",
-            "compilerPath": "\"D:\\Keil5\\UV4\\UV4.exe\""
+            "intelliSenseMode": "${default}"
         }
     ],
     "version": 4
