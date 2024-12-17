@@ -436,8 +436,12 @@ int main(void)
 					if (cntt <= 30)
 					{
 						LED_Blue_rectangle_current(0, 0, 0, BLUE_NUM);
-						// WS_WriteAll_RGB_FRAME_UP(0, 0, BLUE_NUM);
-						// WS_WriteAll_RGB_FRAME_DOWN(0, 0, BLUE_NUM);
+						// 全激活灯效判断
+						if (Board_Order_info[BOARD_NUMBER].hitover)
+						{
+							WS_WriteAll_RGB_FRAME_UP(0, 0, BLUE_NUM);
+							WS_WriteAll_RGB_FRAME_DOWN(0, 0, BLUE_NUM);
+						}
 					}
 
 					if (cntt >= 50)
@@ -620,8 +624,12 @@ int main(void)
 					if (cntt <= 40)
 					{
 						LED_Blue_rectangle_current(0, RED_NUM, 0, 0);
-						// WS_WriteAll_RGB_FRAME_UP(RED_NUM, 0, 0);
-						// WS_WriteAll_RGB_FRAME_DOWN(RED_NUM, 0, 0);
+						// 全激活灯效判断
+						if (Board_Order_info[BOARD_NUMBER].hitover)
+						{
+							WS_WriteAll_RGB_FRAME_UP(RED_NUM, 0, 0);
+							WS_WriteAll_RGB_FRAME_DOWN(RED_NUM, 0, 0);
+						}
 					}
 
 					if (cntt >= 70)
