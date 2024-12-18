@@ -622,7 +622,7 @@ void LED_Blue_rectangle_current(uint16_t wait_time, uint8_t n_R, uint8_t n_G, ui
 	for (i = PIXEL_NUM_REC * 24; i < NUM_REC; i++)
 		send_Buf_rectangle[i] = 0; // 占空比比为0，全为低电平
 
-	// arrow_LED_cut_down_rectangle(-40+8*2,send_Buf_move_rectangle);		//这个是多加的，为了补足空白的两行
+	arrow_LED_cut_down_rectangle(-40 + 8 * 2, send_Buf_move_rectangle); // 这个是多加的，为了补足空白的两行
 	arrow_LED_cut_down_rectangle(0 + 8 * 2, send_Buf_move_rectangle);
 	arrow_LED_cut_down_rectangle(40 + 8 * 2, send_Buf_move_rectangle);
 	arrow_LED_cut_down_rectangle(80 + 8 * 2, send_Buf_move_rectangle);
@@ -671,7 +671,7 @@ void LED_Red_rectangle_current(uint16_t wait_time, uint8_t n_R, uint8_t n_G, uin
 	for (i = PIXEL_NUM_REC * 24; i < NUM_REC; i++)
 		send_Buf_rectangle[i] = 0; // 占空比比为0，全为低电平
 
-	// arrow_LED_cut_down_rectangle(-40+8*2,send_Buf_move_rectangle);		//这个是多加的，为了补足空白的两行
+	arrow_LED_cut_down_rectangle(-40 + 8 * 2, send_Buf_move_rectangle); // 这个是多加的，为了补足空白的两行
 	arrow_LED_cut_down_rectangle(0 + 8 * 2, send_Buf_move_rectangle);
 	arrow_LED_cut_down_rectangle(40 + 8 * 2, send_Buf_move_rectangle);
 	arrow_LED_cut_down_rectangle(80 + 8 * 2, send_Buf_move_rectangle);
