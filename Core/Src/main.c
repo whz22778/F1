@@ -42,6 +42,7 @@ Rings_Key_record_t Rings_Key_record;
 uint16_t buffer_time;
 
 uint8_t ff;
+uint8_t of; // 避免对完全激活的上下边框重复写入。
 
 /* USER CODE END PTD */
 
@@ -52,7 +53,7 @@ uint8_t ff;
 
 // 五块符叶主控序号，0-4
 
-#define BOARD_NUMBER 4
+#define BOARD_NUMBER 1
 
 // 五块符叶主控序号，0-4
 
@@ -442,6 +443,7 @@ int main(void)
 					{
 						HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_2);
 						HAL_TIM_PWM_Stop_DMA(&htim3, TIM_CHANNEL_1);
+						of = 0;
 						cntt = 51;
 					}
 					/* 判断是否击打 */
@@ -556,10 +558,11 @@ int main(void)
 					WS_WriteAll_RGB_FRAME(0, 0, BLUE_NUM);
 
 					// 全激活灯效判断
-					if (Board_Order_info[BOARD_NUMBER].hitover)
+					if (Board_Order_info[BOARD_NUMBER].hitover && of < 5)
 					{
 						WS_WriteAll_RGB_FRAME_UP(0, 0, BLUE_NUM);
 						WS_WriteAll_RGB_FRAME_DOWN(0, 0, BLUE_NUM);
+						of++;
 					}
 
 					if (Rings_Key_record.one_ring_record == 1)
@@ -739,10 +742,11 @@ int main(void)
 
 					WS_WriteAll_RGB_FRAME(RED_NUM, 0, 0);
 					// 全激活灯效判断
-					if (Board_Order_info[BOARD_NUMBER].hitover)
+					if (Board_Order_info[BOARD_NUMBER].hitover && of < 5)
 					{
 						WS_WriteAll_RGB_FRAME_UP(RED_NUM, 0, 0);
 						WS_WriteAll_RGB_FRAME_DOWN(RED_NUM, 0, 0);
+						of++;
 					}
 
 					if (Rings_Key_record.one_ring_record == 1)
